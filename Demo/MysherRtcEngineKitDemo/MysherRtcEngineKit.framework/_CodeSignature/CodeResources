@@ -10,11 +10,11 @@
 		</data>
 		<key>Frameworks/WebRTC.framework/WebRTC</key>
 		<data>
-		8JeUaQ3czq0IJJal8WfsAnETxPg=
+		Q5kC4LUTleE7gaHthsQfclJTYbs=
 		</data>
 		<key>Frameworks/WebRTC.framework/_CodeSignature/CodeResources</key>
 		<data>
-		yflJ+bOeSd49c+9OWQHTPqp+8R4=
+		/Ix10dirLDek/wqXsI9pRBNri3E=
 		</data>
 		<key>Headers/MysherEnumerates.h</key>
 		<data>
@@ -54,14 +54,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			YxH4KH+VNjyShWJ1YTe3pMnbZuhEAJ8sSjfLuNwH6Vk=
+			Yw/rmLn8vcmWhD7+TIW2QDcrh6/q4aJSUcDC2sZU0eo=
 			</data>
 		</dict>
 		<key>Frameworks/WebRTC.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zdaOW75TixbAZKko+uxrHrr0kd5uRlHArraSfBMkVsc=
+			7HdgKiP1buFUMa2S7SiEEVIHFp2AAY1gTWFvMMK7+Q4=
 			</data>
 		</dict>
 		<key>Headers/MysherEnumerates.h</key>
