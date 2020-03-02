@@ -4,18 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Frameworks/WebRTC.framework/Info.plist</key>
-		<data>
-		IALB5ECAeH41bU5qEGc8VJYfRUA=
-		</data>
-		<key>Frameworks/WebRTC.framework/WebRTC</key>
-		<data>
-		Q5kC4LUTleE7gaHthsQfclJTYbs=
-		</data>
-		<key>Frameworks/WebRTC.framework/_CodeSignature/CodeResources</key>
-		<data>
-		/Ix10dirLDek/wqXsI9pRBNri3E=
-		</data>
 		<key>Headers/MysherEnumerates.h</key>
 		<data>
 		vrM0XXuDVWc1ZD8FLbX8Fs1HwkE=
@@ -43,27 +31,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/WebRTC.framework/Info.plist</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			yud8RpsC99JNKPCVwzZ/fmEpoBBN7HVYsMiTq1Vc6/Q=
-			</data>
-		</dict>
-		<key>Frameworks/WebRTC.framework/WebRTC</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Yw/rmLn8vcmWhD7+TIW2QDcrh6/q4aJSUcDC2sZU0eo=
-			</data>
-		</dict>
-		<key>Frameworks/WebRTC.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			7HdgKiP1buFUMa2S7SiEEVIHFp2AAY1gTWFvMMK7+Q4=
-			</data>
-		</dict>
 		<key>Headers/MysherEnumerates.h</key>
 		<dict>
 			<key>hash2</key>

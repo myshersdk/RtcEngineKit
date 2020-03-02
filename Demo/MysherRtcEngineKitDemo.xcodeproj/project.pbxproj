@@ -16,6 +16,8 @@
 		DA9CFA3B23FE300A00A3095D /* CallingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CFA3A23FE300A00A3095D /* CallingViewController.m */; };
 		DA9CFA71240904A900A3095D /* MysherRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9CFA70240904A900A3095D /* MysherRtcEngineKit.framework */; };
 		DA9CFA72240904A900A3095D /* MysherRtcEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA9CFA70240904A900A3095D /* MysherRtcEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DAE1F7B5240CD9CA00A1946D /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE1F7B4240CD9CA00A1946D /* WebRTC.framework */; };
+		DAE1F7B6240CD9CA00A1946D /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DAE1F7B4240CD9CA00A1946D /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +28,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				DA9CFA72240904A900A3095D /* MysherRtcEngineKit.framework in Embed Frameworks */,
+				DAE1F7B6240CD9CA00A1946D /* WebRTC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,6 +49,7 @@
 		DA9CFA3923FE300A00A3095D /* CallingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallingViewController.h; sourceTree = "<group>"; };
 		DA9CFA3A23FE300A00A3095D /* CallingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallingViewController.m; sourceTree = "<group>"; };
 		DA9CFA70240904A900A3095D /* MysherRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MysherRtcEngineKit.framework; path = MysherRtcEngineKitDemo/MysherRtcEngineKit.framework; sourceTree = "<group>"; };
+		DAE1F7B4240CD9CA00A1946D /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = MysherRtcEngineKitDemo/WebRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA9CFA71240904A900A3095D /* MysherRtcEngineKit.framework in Frameworks */,
+				DAE1F7B5240CD9CA00A1946D /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +103,7 @@
 		DA9CFA3223FE229700A3095D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DAE1F7B4240CD9CA00A1946D /* WebRTC.framework */,
 				DA9CFA70240904A900A3095D /* MysherRtcEngineKit.framework */,
 			);
 			name = Frameworks;
