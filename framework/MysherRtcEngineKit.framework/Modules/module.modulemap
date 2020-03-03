@@ -1,6 +1,0 @@
-framework module MysherRtcEngineKit {
-  umbrella header "MysherRtcEngineKit.h"
-
-  export *
-  module * { export * }
-}

@@ -1,0 +1,6 @@
+framework module ViitalkRtcEngineKit {
+  umbrella header "ViitalkRtcEngineKit.h"
+
+  export *
+  module * { export * }
+}
