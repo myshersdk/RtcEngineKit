@@ -34,6 +34,19 @@
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didLoginStatus:(ViitalkLoginStatusCode)status;
 
 /*!
+@method rtcEngine:didMediaConnectionState
+@abstract
+  媒体数据通道的连接状态通知
+
+@param status
+ 相应的状态
+ 
+@param number
+ 对端号码
+*/
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didMediaConnectionState:(ViitalkConnectionStateCode)status withPeerNumber:(NSString * _Nullable)number;
+
+/*!
 @method rtcEngine:didAnswerCall
 @abstract
  拔打P2P电话后对方已接听
@@ -44,14 +57,17 @@
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAnswerCall:(NSString * _Nullable)number;
 
 /*!
-@method rtcEngine:didIncomingCall
+@method rtcEngine:didIncomingCall:hasVideo
 @abstract
  来了P2P电话
 
 @param number
  对方号码
+ 
+@param video
+ 是否有视频画面
 */
-- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number;
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number hasVideo:(BOOL)video;
 
 /*!
 @method rtcEngine:didHangupCall
@@ -208,6 +224,28 @@ typedef void (^RoomCompletionHandler)(ViitalkRoomStatusCode status, NSDictionary
 - (void)login:(NSString * _Nonnull)userName
      password:(NSString * _Nonnull)password
        server:(NSString * _Nullable)server;
+
+/*!
+@method login:password:server:appVersion
+@abstract
+ 登陆指定的信令服务器，设置应用版本号
+
+@param userName
+ 帐号
+ 
+@param password
+ 密码，没有可以为空
+ 
+@param server
+ 信令服务器URL
+ 
+@param version
+ 版本号
+*/
+- (void)login:(NSString * _Nonnull)userName
+     password:(NSString * _Nonnull)password
+       server:(NSString * _Nullable)server
+   appVersion:(NSString * _Nullable)version;
 
 /*!
 @method logout

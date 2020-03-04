@@ -58,7 +58,18 @@ typedef NS_ENUM(NSInteger, ViitalkCallMediaMode) {
     /** audio only */
     VIITALK_CALL_MEDIA_MODE_AUDIO = 1,
     /** receive only, no send */
-    VIITALK_CALL_MEDIA_MODE_NOPUBLISH = 1,
+    VIITALK_CALL_MEDIA_MODE_NOPUBLISH = 2,
+    /** mute the mic first off */
+    VIITALK_CALL_MEDIA_MODE_AV_MUTE_MIC = 3,
+};
+
+/** the media connection state code
+ */
+typedef NS_ENUM(NSInteger, ViitalkConnectionStateCode) {
+    /** connected */
+    VIITALK_CONNECTION_STATE_CONNECTED = 0,
+    /** disconnected */
+    VIITALK_CONNECTION_STATE_DISCONNECTED = 1,
 };
 
 typedef NS_ENUM(NSInteger, ViitalkMediaContentType) {

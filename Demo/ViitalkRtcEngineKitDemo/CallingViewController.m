@@ -502,22 +502,40 @@
 
 #pragma mark - ViitalkRtcEngineDelegate
 
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didMediaConnectionState:(ViitalkConnectionStateCode)status withPeerNumber:(NSString * _Nullable)number
+{
+    if(status == VIITALK_CONNECTION_STATE_CONNECTED)
+    {
+        NSLog(@"与%@已成功建立数据连接通道", number);
+    }
+    else if(status == VIITALK_CONNECTION_STATE_DISCONNECTED)
+    {
+        NSLog(@"与%@的数据连接通道已断开", number);
+    }
+    return YES;
+}
+
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAnswerCall:(NSString * _Nullable)number
 {
     NSLog(@"%@已接接听电话", number);
     return YES;
 }
 
-- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number hasVideo:(BOOL)video;
 {
     NSLog(@"%@来电话啦", number);
+    NSString* msg = @"来语音电话啦";
+    if(video)
+    {
+        msg = @"来视频电话啦";
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:number message:@"来电话啦" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:number message:msg preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancle = [UIAlertAction actionWithTitle:@"拒接" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
               [self.kit refuseCall];
             }];
             UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"接听" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-               [self.kit answerCall:VIITALK_CALL_MEDIA_MODE_AV completionHandler:^(ViitalkCallStatusCode status, NSDictionary * _Nullable extra) {
+                [self.kit answerCall:video ? VIITALK_CALL_MEDIA_MODE_AV : VIITALK_CALL_MEDIA_MODE_AUDIO completionHandler:^(ViitalkCallStatusCode status, NSDictionary * _Nullable extra) {
                    switch (status) {
                        case VIITALK_CALL_SUCCESS:
                            [self processStartCallSuccess:extra];

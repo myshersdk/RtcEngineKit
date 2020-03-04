@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/ViitalkEnumerates.h</key>
 		<data>
-		GYArHbNGPsJsG7yZUm0WFEiLsyI=
+		TbyoLMIBs7uIND+X3HXyLgd+BoA=
 		</data>
 		<key>Headers/ViitalkLocalVideoView.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/ViitalkRtcEngineKit.h</key>
 		<data>
-		1sD9vSkvjtnaSdEYyFyaQUF6z24=
+		1tzojfKfDQ+QZpaUxx2iMo/I7b0=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -35,7 +35,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CvmV4mBJ6f7HuDGXI7M0X9cN/KAwDI1g/t8iYc1A25o=
+			S8zeEwxPwA2wuOZNLj/SZUZi3TY873eM3P4XF2LVZX8=
 			</data>
 		</dict>
 		<key>Headers/ViitalkLocalVideoView.h</key>
@@ -56,7 +56,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QQCjl6tNAJiL4AI0+OSmilh+dlrRH6byvvRwWsvys4I=
+			/7D9M5jbk8IVEhcNgVhsdEkceQoExhwsBVroKUIRkDI=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
