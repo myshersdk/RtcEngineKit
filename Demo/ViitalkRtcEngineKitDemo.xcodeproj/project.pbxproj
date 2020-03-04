@@ -126,7 +126,7 @@
 			dependencies = (
 			);
 			name = ViitalkRtcEngineKitDemo;
-			productName = MysherRtcEngineKitDemo;
+			productName = ViitalkRtcEngineKitDemo;
 			productReference = DA9CF9F623FD1B2600A3095D /* ViitalkRtcEngineKitDemo.app */;
 			productType = "com.apple.product-type.application";
 		};

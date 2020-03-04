@@ -40,6 +40,7 @@
 @property (nonatomic) BOOL hasMuteVideo;
 
 @property (nonatomic) BOOL isConference;
+@property (nonatomic) BOOL isCalling;
 
 @end
 
@@ -189,8 +190,10 @@
     else
     {
         [self.kit stopCall];
+        self.isCalling = NO;
     }
     [self.callView removeFromSuperview];
+    self.callView = nil;
 }
 
 - (void)OnSpeakerMute:(UIButton*)sender
@@ -222,10 +225,43 @@
 
 - (void)OnInvite:(UIButton*)sender
 {
-    [self.kit inviteUser:@[@"8010016778"]];
-    
-    // 测试踢人
-    // [self.kit sendRoomCommand:VIITALK_ROOM_CMD_LEAVE_ROOM toUser:_peerNumbers[0]];
+    if(self.isConference)
+    {
+        [self.kit inviteUser:@[@"8010016778"]];
+        
+        // 测试踢人
+        // [self.kit sendRoomCommand:VIITALK_ROOM_CMD_LEAVE_ROOM toUser:_peerNumbers[0]];
+    }
+    else
+    {
+        // P2P转会议模式
+        [self.kit createRoom:VIITALK_CALL_MEDIA_MODE_AV completionHandler:^(ViitalkRoomStatusCode status, NSDictionary * _Nullable extra) {
+            if(status == VIITALK_ROOM_SUCCESS)
+            {
+                NSLog(@"创建房间成功");
+                self.isConference = YES;
+                [self processStartCallSuccess:extra];
+
+                // 成功创建房间后，再邀请对方加入会议
+                [self.kit inviteUser:@[@"8010016778"]];
+            }
+            else
+            {
+                if(status == VIITALK_ROOM_ERROR_EXIST)
+                {
+                    NSLog(@"创建房间失败，房间已经存在");
+                }
+                else if(status == VIITALK_ROOM_ERROR_CREATE)
+                {
+                    NSLog(@"创建房间失败， 其它原因");
+                }
+                else if(status == VIITALK_ROOM_ERROR_JOIN)
+                {
+                    NSLog(@"创建房间成功后，加入房间失败");
+                }
+            }
+        }];
+    }
 }
 
 
@@ -235,12 +271,13 @@
         switch (status) {
             case VIITALK_CALL_SUCCESS:
                 self.isConference = NO;
+                self.isCalling = YES;
                 [self processStartCallSuccess:extra];
                 break;
                 
             case VIITALK_CALL_ERROR_INROOM:
                 NSLog(@"在会议中，直接加入");
-                [self processJoinRoom:extra andAVMode:mode];
+                [self processJoinRoom:extra[@"room"] withPassword:extra[@"roompwd"] andAVMode:mode];
                 break;
                 
             case VIITALK_CALL_ERROR_CALLING:
@@ -280,6 +317,12 @@
 - (void)processStartCallSuccess:(NSDictionary*)extra
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if(self.callView)
+        {
+            // 简单处理，直接全部移除，p2p转会议模式后会跑这里
+            [self.callView removeFromSuperview];
+        }
+
         self.callView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
         self.callView.backgroundColor = [UIColor whiteColor];
 
@@ -348,25 +391,22 @@
         [self.videoMuteButton setTitle:@"Video" forState:UIControlStateNormal];
         [self.callView addSubview:self.videoMuteButton];
         
-        if(self.isConference)
-        {
-            self.inviteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [self.inviteButton addTarget:self action:@selector(OnInvite:) forControlEvents:UIControlEventTouchUpInside];
-            self.inviteButton.frame = CGRectMake(CGRectGetMaxX(self.videoMuteButton.frame) + 12, CGRectGetHeight(self.callView.frame) - 46, 48, 36);
-            [self.inviteButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-            self.inviteButton.titleLabel.font = [UIFont systemFontOfSize: 14.0];
-            self.inviteButton.layer.borderWidth = .5;
-            [self.inviteButton setTitle:@"Invite" forState:UIControlStateNormal];
-            [self.callView addSubview:self.inviteButton];
-        }
+        self.inviteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.inviteButton addTarget:self action:@selector(OnInvite:) forControlEvents:UIControlEventTouchUpInside];
+        self.inviteButton.frame = CGRectMake(CGRectGetMaxX(self.videoMuteButton.frame) + 12, CGRectGetHeight(self.callView.frame) - 46, 48, 36);
+        [self.inviteButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        self.inviteButton.titleLabel.font = [UIFont systemFontOfSize: 14.0];
+        self.inviteButton.layer.borderWidth = .5;
+        [self.inviteButton setTitle:@"Invite" forState:UIControlStateNormal];
+        [self.callView addSubview:self.inviteButton];
         
         [self.view addSubview:self.callView];
     });
 }
 
-- (void)processJoinRoom:(NSDictionary*)extra andAVMode:(ViitalkCallMediaMode)mode
+- (void)processJoinRoom:(NSString*)room withPassword:(NSString*)pwd andAVMode:(ViitalkCallMediaMode)mode
 {
-    [self.kit joinRoom:extra[@"room"] password:extra[@"roompwd"] andAVMode:mode completionHandler:^(ViitalkRoomStatusCode status, NSDictionary * _Nullable extra) {
+    [self.kit joinRoom:room password:pwd andAVMode:mode completionHandler:^(ViitalkRoomStatusCode status, NSDictionary * _Nullable extra) {
         if(status == VIITALK_ROOM_SUCCESS)
         {
             NSLog(@"加入房间成功");
@@ -398,38 +438,25 @@
     BOOL hasVideo = [extra[@"video"] boolValue];
     NSString* content = [NSString stringWithFormat:@"被%@邀请加入%@房间%@", inviter, hasVideo ? @"视频" : @"语音", room];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:@"会议邀请" message:content preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancle = [UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-          [self.kit refuseJoin:room];
-        }];
-        UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"加入" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-           [self.kit joinRoom:room andAVMode:hasVideo ? VIITALK_CALL_MEDIA_MODE_AV : VIITALK_CALL_MEDIA_MODE_AUDIO completionHandler:^(ViitalkRoomStatusCode status, NSDictionary * _Nullable extra) {
-               if(status == VIITALK_ROOM_SUCCESS)
-               {
-                   NSLog(@"加入房间成功");
-                   self.isConference = YES;
-                   [self processStartCallSuccess:extra];
-               }
-               else
-               {
-                   if(status == VIITALK_ROOM_ERROR_JOIN)
-                   {
-                       NSLog(@"加入房间失败，其它原因");
-                   }
-                   else if(status == VIITALK_ROOM_ERROR_NOTEXIST)
-                   {
-                       NSLog(@"加入房间失败，房间不存在");
-                   }
-                   else if(status == VIITALK_ROOM_ERROR_PASSWORD)
-                   {
-                       NSLog(@"加入房间失败，密码错误");
-                   }
-               }
-           }];
-        }];
-        [alertVc addAction:cancle];
-        [alertVc addAction:confirm];
-        [self presentViewController:alertVc animated:YES completion:^{}];
+        if(self.isCalling)
+        {
+            NSLog(@"正在与对方P2P通话，直接转会议模式，加入其房间就可以");
+            [self processJoinRoom:room withPassword:nil andAVMode:hasVideo ? VIITALK_CALL_MEDIA_MODE_AV : VIITALK_CALL_MEDIA_MODE_AUDIO];
+            
+        }
+        else
+        {
+            UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:@"会议邀请" message:content preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancle = [UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+              [self.kit refuseJoin:room];
+            }];
+            UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"加入" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [self processJoinRoom:room withPassword:nil andAVMode:hasVideo ? VIITALK_CALL_MEDIA_MODE_AV : VIITALK_CALL_MEDIA_MODE_AUDIO];
+            }];
+            [alertVc addAction:cancle];
+            [alertVc addAction:confirm];
+            [self presentViewController:alertVc animated:YES completion:^{}];
+        }
     });
 }
 
@@ -438,6 +465,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.kit leaveRoom];
         [self.callView removeFromSuperview];
+        self.callView = nil;
     });
 }
 
@@ -525,6 +553,8 @@
     NSLog(@"对方已经挂断电话");
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.callView removeFromSuperview];
+        self.callView = nil;
+        self.isCalling = NO;
     });
     return YES;
 }
