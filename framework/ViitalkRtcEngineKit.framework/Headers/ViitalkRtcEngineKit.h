@@ -191,6 +191,15 @@ typedef void (^RoomCompletionHandler)(ViitalkRoomStatusCode status, NSDictionary
 */
 + (NSString * _Nonnull)getSdkVersion;
 
+/*!
+@method removeDelegate
+@abstract
+ 移除ViitalkRtcEngineDelegate接口
+@param delegate
+ 通知接口
+*/
+- (void)removeDelegate:(id<ViitalkRtcEngineDelegate> _Nullable)delegate;
+
 #pragma mark - signalling
 
 /*!

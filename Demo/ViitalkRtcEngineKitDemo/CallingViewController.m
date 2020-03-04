@@ -66,6 +66,12 @@
     self.peerNumbers = [NSMutableArray array];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.kit removeDelegate:self];
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark - get
 
 - (UITextField*)callNumberTextField {
