@@ -29,6 +29,14 @@
     NSString *_pwd;
 }
 
+@synthesize kit = _kit;
+@synthesize text = _text;
+@synthesize userLabel = _userLabel;
+@synthesize pwdLabel = _pwdLabel;
+@synthesize userTextField = _userTextField;
+@synthesize pwdTextField = _pwdTextField;
+@synthesize loginButton = _loginButton;
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
@@ -153,7 +161,7 @@
     NSUInteger pwd_len = [_pwd length];
     
     if(user_len > 0 && pwd_len > 0){
-        [_kit login:_user password:_pwd];
+        [_kit login:_user password:_pwd server:@"test.viitalk.com"];
     }
     else {
         self.text.text = @"用户名或密码为空";

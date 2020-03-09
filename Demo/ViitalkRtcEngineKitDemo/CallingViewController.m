@@ -46,6 +46,28 @@
 
 @implementation CallingViewController
 
+@synthesize kit = _kit;
+@synthesize logoutButton = _logoutButton;
+@synthesize callNumberTextField = _callNumberTextField;
+@synthesize videoCallButton = _videoCallButton;
+@synthesize audioCallButton = _audioCallButton;
+@synthesize createConferenceButton = _createConferenceButton;
+@synthesize switchCameraButton = _switchCameraButton;
+@synthesize hangupButton = _hangupButton;
+@synthesize speakerMuteButton = _speakerMuteButton;
+@synthesize micMuteButton = _micMuteButton;
+@synthesize videoMuteButton = _videoMuteButton;
+@synthesize inviteButton = _inviteButton;
+@synthesize callView = _callView;
+@synthesize p2pRemoteView = _p2pRemoteView;
+@synthesize remoteViews = _remoteViews;
+@synthesize peerNumbers = _peerNumbers;
+@synthesize hasMuteSpeaker = _hasMuteSpeaker;
+@synthesize hasMuteMic = _hasMuteMic;
+@synthesize hasMuteVideo = _hasMuteVideo;
+@synthesize isConference = _isConference;
+@synthesize isCalling = _isCalling;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,6 +81,7 @@
     [self.view addSubview:self.createConferenceButton];
     [self.view addSubview:self.logoutButton];
     
+    //_callNumberTextField.text = @"8010019153";
     _callNumberTextField.text = @"8010016778";
     
     self.kit = [ViitalkRtcEngineKit sharedEngineWithDelegate:self];
@@ -367,8 +390,7 @@
         self.hangupButton.titleLabel.font = [UIFont systemFontOfSize: 14.0];
         self.hangupButton.layer.borderWidth = .5;
         [self.hangupButton setTitle:@"Hang up" forState:UIControlStateNormal];
-        [self.callView addSubview:self.hangupButton
-         ];
+        [self.callView addSubview:self.hangupButton];
         
         self.speakerMuteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.speakerMuteButton addTarget:self action:@selector(OnSpeakerMute:) forControlEvents:UIControlEventTouchUpInside];
@@ -527,7 +549,7 @@
     return YES;
 }
 
-- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number hasVideo:(BOOL)video;
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didIncomingCall:(NSString * _Nullable)number hasVideo:(BOOL)video
 {
     NSLog(@"%@来电话啦", number);
     NSString* msg = @"来语音电话啦";
@@ -604,12 +626,22 @@
             UIView* remoteVideoView = remoteView.view;
             if(remoteVideoView)
             {
+                CGFloat x = 0;
                 CGFloat y = 0;
                 if(self.remoteViews.count > 0)
                 {
-                    y = CGRectGetMaxY(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                    if((self.remoteViews.count % 2) == 0)
+                    {
+                        x = 0;
+                        y = CGRectGetMaxY(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                    }
+                    else
+                    {
+                        x = CGRectGetMaxX(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                        y = CGRectGetMinY(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                    }
                 }
-                remoteVideoView.frame = CGRectMake(0, y, CGRectGetWidth(self.view.frame), 180);
+                remoteVideoView.frame = CGRectMake(0, y, CGRectGetWidth(self.view.frame) / 2, 120);
                 [self.callView addSubview:remoteVideoView];
             }
             self.remoteViews[peerNumber] = remoteView;

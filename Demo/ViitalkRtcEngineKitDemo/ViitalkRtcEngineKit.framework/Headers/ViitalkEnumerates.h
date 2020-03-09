@@ -105,11 +105,13 @@ typedef NS_ENUM(NSInteger, ViitalkRoomStatusCode) {
     /** create room error */
     VIITALK_ROOM_ERROR_CREATE = 2,
     /** join room error */
-    VIITALK_ROOM_ERROR_JOIN = 3,
+    VIITALK_ROOM_ERROR_JOIN = 50,
     /** join not exist room error */
-    VIITALK_ROOM_ERROR_NOTEXIST = 4,
+    VIITALK_ROOM_ERROR_NOTEXIST = 51,
     /** password is wrong */
-    VIITALK_ROOM_ERROR_PASSWORD = 5,
+    VIITALK_ROOM_ERROR_PASSWORD = 52,
+    /** the room is full */
+    VIITALK_ROOM_ERROR_FULL = 53,
     /** the other errors */
     VIITALK_ROOM_ERROR_OTHER = 100,
 };
