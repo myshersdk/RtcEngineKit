@@ -32,8 +32,10 @@
 @property (nonatomic, strong) UIView* callView;
 
 @property (nonatomic, strong) ViitalkRemoteVideoView* p2pRemoteView;
-@property (nonatomic, strong) NSMutableDictionary<NSString*, ViitalkRemoteVideoView*>* remoteViews;
-@property (nonatomic, strong) NSMutableArray<NSString*>* peerNumbers;
+@property (nonatomic, strong) NSMutableArray<ViitalkRemoteVideoView*>* remoteViews;
+@property (nonatomic, strong) NSMutableArray<NSDictionary*>* peerNumbers;
+
+@property (nonatomic) int currentPage;
 
 @property (nonatomic) BOOL hasMuteSpeaker;
 @property (nonatomic) BOOL hasMuteMic;
@@ -62,6 +64,7 @@
 @synthesize p2pRemoteView = _p2pRemoteView;
 @synthesize remoteViews = _remoteViews;
 @synthesize peerNumbers = _peerNumbers;
+@synthesize currentPage = _currentPage;
 @synthesize hasMuteSpeaker = _hasMuteSpeaker;
 @synthesize hasMuteMic = _hasMuteMic;
 @synthesize hasMuteVideo = _hasMuteVideo;
@@ -81,11 +84,11 @@
     [self.view addSubview:self.createConferenceButton];
     [self.view addSubview:self.logoutButton];
     
-    //_callNumberTextField.text = @"8010019153";
-    _callNumberTextField.text = @"8010016778";
+    _callNumberTextField.text = @"8010019153";
+    // _callNumberTextField.text = @"8010016778";
     
     self.kit = [ViitalkRtcEngineKit sharedEngineWithDelegate:self];
-    self.remoteViews = [NSMutableDictionary dictionary];
+    self.remoteViews = [NSMutableArray array];
     self.peerNumbers = [NSMutableArray array];
 }
 
@@ -189,6 +192,10 @@
             {
                 NSLog(@"创建房间失败，房间已经存在");
             }
+            else if(status == VIITALK_ROOM_ERROR_PERMISSION)
+            {
+                NSLog(@"创建房间失败，没有权限");
+            }
             else if(status == VIITALK_ROOM_ERROR_CREATE)
             {
                 NSLog(@"创建房间失败， 其它原因");
@@ -231,7 +238,7 @@
     self.kit.muteSpeaker = _hasMuteSpeaker;
     
     // 测试会议模式下关闭对方的设备
-    // [self.kit sendRoomCommand:_hasMuteSpeaker ? VIITALK_ROOM_CMD_CLOSE_SPEAKER : VIITALK_ROOM_CMD_OPEN_SPEAKER toUser:_peerNumbers[0]];
+    // [self.kit sendRoomCommand:_hasMuteSpeaker ? VIITALK_ROOM_CMD_CLOSE_SPEAKER : VIITALK_ROOM_CMD_OPEN_SPEAKER toUser:_peerNumbers[0][@"peerNumber"]];
 }
 
 - (void)OnMicMute:(UIButton*)sender
@@ -240,7 +247,7 @@
     self.kit.muteMic = _hasMuteMic;
     
     // 测试会议模式下关闭对方的设备
-    // [self.kit sendRoomCommand:_hasMuteMic ? VIITALK_ROOM_CMD_CLOSE_MIC : VIITALK_ROOM_CMD_OPEN_MIC toUser:_peerNumbers[0]];
+    // [self.kit sendRoomCommand:_hasMuteMic ? VIITALK_ROOM_CMD_CLOSE_MIC : VIITALK_ROOM_CMD_OPEN_MIC toUser:_peerNumbers[0][@"peerNumber"]];
 }
 
 - (void)OnVideoMute:(UIButton*)sender
@@ -249,7 +256,7 @@
     self.kit.muteVideo = _hasMuteVideo;
     
     // 测试会议模式下关闭对方的设备
-    // [self.kit sendRoomCommand:_hasMuteVideo ? VIITALK_ROOM_CMD_CLOSE_VIDEO : VIITALK_ROOM_CMD_OPEN_VIDEO toUser:_peerNumbers[0]];
+    // [self.kit sendRoomCommand:_hasMuteVideo ? VIITALK_ROOM_CMD_CLOSE_VIDEO : VIITALK_ROOM_CMD_OPEN_VIDEO toUser:_peerNumbers[0][@"peerNumber"]];
 }
 
 - (void)OnInvite:(UIButton*)sender
@@ -259,7 +266,11 @@
         [self.kit inviteUser:@[@"8010016778"]];
         
         // 测试踢人
-        // [self.kit sendRoomCommand:VIITALK_ROOM_CMD_LEAVE_ROOM toUser:_peerNumbers[0]];
+        // [self.kit sendRoomCommand:VIITALK_ROOM_CMD_LEAVE_ROOM toUser:_peerNumbers[0][@"peerNumber"]];
+        
+        // 测试翻页
+        // _currentPage += 1;
+        // [self resetRemoteVideoData];
     }
     else
     {
@@ -455,6 +466,10 @@
             {
                 NSLog(@"加入房间失败，密码错误");
             }
+            else if(status == VIITALK_ROOM_ERROR_FULL)
+            {
+                NSLog(@"加入房间失败，房间人数已满");
+            }
         }
     }];
 }
@@ -499,12 +514,18 @@
 
 - (void)resetRemoteVideoData
 {
-    [self.kit wantVideoData:self.peerNumbers];
+    NSMutableArray<NSString*>* peerNumbers = [NSMutableArray array];
+    int maxPerPage = 4;
+    for(int i = self.currentPage * maxPerPage, j = 0; j < maxPerPage && i < (int)self.peerNumbers.count; i++, j++)
+    {
+        [peerNumbers addObject:self.peerNumbers[i][@"peerNumber"]];
+    }
+    [self.kit wantVideoData:peerNumbers];
 }
 
 #pragma mark - ViitalkRemoteVideoViewDelegate
 
-- (void)remoteVideoView:(ViitalkRemoteVideoView*)view didChangeVideoView:(CGSize)size
+- (void)remoteVideoView:(ViitalkRemoteVideoView*)view didChangeVideoViewSize:(CGSize)size
 {
     CGRect bounds = CGRectMake(CGRectGetMinX(view.view.frame), CGRectGetMinY(view.view.frame), CGRectGetWidth(view.view.frame), CGRectGetHeight(view.view.frame));
     if(view == self.p2pRemoteView)
@@ -526,6 +547,11 @@
     remoteVideoFrame.size.width *= scale;
     view.view.frame = remoteVideoFrame;
     view.view.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+}
+
+- (void)remoteVideoView:(ViitalkRemoteVideoView*)videoView didChangeVideoViewSourceNumber:(uint64_t)sourceNumber
+{
+    NSLog(@"+++++sourceNumberChange:%@", @(sourceNumber));
 }
 
 #pragma mark - ViitalkRtcEngineDelegate
@@ -633,25 +659,29 @@
                     if((self.remoteViews.count % 2) == 0)
                     {
                         x = 0;
-                        y = CGRectGetMaxY(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                        y = CGRectGetMaxY(self.remoteViews.lastObject.view.frame);
                     }
                     else
                     {
-                        x = CGRectGetMaxX(self.remoteViews[self.peerNumbers.lastObject].view.frame);
-                        y = CGRectGetMinY(self.remoteViews[self.peerNumbers.lastObject].view.frame);
+                        x = CGRectGetMaxX(self.remoteViews.lastObject.view.frame);
+                        y = CGRectGetMinY(self.remoteViews.lastObject.view.frame);
                     }
                 }
-                remoteVideoView.frame = CGRectMake(0, y, CGRectGetWidth(self.view.frame) / 2, 120);
+                remoteVideoView.frame = CGRectMake(x, y, CGRectGetWidth(self.view.frame) / 2, 120);
                 [self.callView addSubview:remoteVideoView];
             }
-            self.remoteViews[peerNumber] = remoteView;
+            [self.remoteViews addObject:remoteView];
         }
         int idType = [participant[@"idType"] intValue];
         int joinIndex = [participant[@"joinIndex"] intValue];
         BOOL isCloseVideo = [participant[@"isCloseVideo"] boolValue];
         BOOL isCloseMic = [participant[@"isCloseMic"] boolValue];
         BOOL isCloseSpeaker = [participant[@"isCloseSpeaker"] boolValue];
-        [self.peerNumbers addObject:peerNumber];
+        [self.peerNumbers addObject:@{@"peerNumber": peerNumber,
+                                      @"joinIndex": @(joinIndex),
+                                      @"isCloseVideo": @(isCloseVideo),
+                                      @"isCloseMic": @(isCloseMic),
+                                      @"isCloseSpeaker": @(isCloseSpeaker)}];
 
         NSString* mode = @"";
         if(idType == VIITALK_ROOM_IDENTIFY_TYPE_HOST)
@@ -668,6 +698,11 @@
         }
         NSLog(@"%@加入房间，模式:%@ 序号:%d 视频%@ 麦克风%@ 扬声器%@", peerNumber, mode, joinIndex, isCloseVideo ? @"关闭" : @"打开", isCloseMic ? @"关闭" : @"打开", isCloseSpeaker ? @"关闭" : @"打开");
     }
+    [self.peerNumbers sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSNumber *number1 = obj1[@"joinIndex"];
+        NSNumber *number2 = obj2[@"joinIndex"];
+        return [number1 compare:number2];
+    }];
     [self resetRemoteVideoData];
     return YES;
 }
@@ -676,8 +711,14 @@
 {
     for(NSString* peerNumber in peerNumbers)
     {
-        [self.remoteViews[peerNumber].view removeFromSuperview];
-        [self.peerNumbers removeObject:peerNumber];
+        for(NSDictionary* p in self.peerNumbers)
+        {
+            if([peerNumber isEqualToString:p[@"peerNumber"]])
+            {
+                [self.peerNumbers removeObject:p];
+                break;
+            }
+        }
         NSLog(@"%@离开房间", peerNumber);
     }
     [self resetRemoteVideoData];

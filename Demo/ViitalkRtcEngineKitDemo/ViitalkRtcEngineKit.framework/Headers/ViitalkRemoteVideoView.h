@@ -12,7 +12,9 @@
 
 @protocol ViitalkRemoteVideoViewDelegate <NSObject>
 @required
-- (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoView:(CGSize)size;
+- (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoViewSize:(CGSize)size;
+
+- (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoViewSourceNumber:(uint64_t)sourceNumber;
 
 @end
 

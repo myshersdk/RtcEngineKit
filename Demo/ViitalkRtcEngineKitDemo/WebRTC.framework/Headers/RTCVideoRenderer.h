@@ -25,6 +25,8 @@ RTC_EXPORT
 /** The size of the frame. */
 - (void)setSize:(CGSize)size;
 
+- (void)setSourceNumber:(uint64_t)sourceNumber;
+
 /** The frame to be displayed. */
 - (void)renderFrame:(nullable RTCVideoFrame *)frame;
 
@@ -34,6 +36,8 @@ RTC_EXPORT
 @protocol RTCVideoViewDelegate
 
 - (void)videoView:(id<RTCVideoRenderer>)videoView didChangeVideoSize:(CGSize)size;
+
+- (void)videoView:(id<RTCVideoRenderer>)videoView didChangeSourceNumber:(uint64_t)sourceNumber;
 
 @end
 

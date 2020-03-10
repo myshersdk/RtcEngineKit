@@ -100,10 +100,12 @@ typedef NS_ENUM(NSInteger, ViitalkMediaContentOperator) {
 typedef NS_ENUM(NSInteger, ViitalkRoomStatusCode) {
     /** success */
     VIITALK_ROOM_SUCCESS = 0,
-    /** room has exist */
-    VIITALK_ROOM_ERROR_EXIST = 1,
     /** create room error */
-    VIITALK_ROOM_ERROR_CREATE = 2,
+    VIITALK_ROOM_ERROR_CREATE = 1,
+    /** room has exist */
+    VIITALK_ROOM_ERROR_EXIST = 2,
+    /** no permission to create room */
+    VIITALK_ROOM_ERROR_PERMISSION = 3,
     /** join room error */
     VIITALK_ROOM_ERROR_JOIN = 50,
     /** join not exist room error */
