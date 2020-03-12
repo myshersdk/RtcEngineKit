@@ -14,7 +14,7 @@
 @required
 - (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoViewSize:(CGSize)size;
 
-- (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoViewSourceNumber:(uint64_t)sourceNumber;
+- (void)remoteVideoView:(ViitalkRemoteVideoView * _Nonnull)view didChangeVideoViewSourceNumber:(NSString* _Nullable)sourceNumber;
 
 @end
 

@@ -34,7 +34,7 @@
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didLoginStatus:(ViitalkLoginStatusCode)status;
 
 /*!
-@method rtcEngine:didMediaConnectionState
+@method rtcEngine:didMediaConnectionState:withPeerNumber
 @abstract
   媒体数据通道的连接状态通知
 
@@ -153,6 +153,20 @@
  相应参数
 */
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didRecvRoomCommand:(ViitalkRoomCommandCode)cmd extra:(NSDictionary * _Nullable)extra;
+
+/*!
+@method rtcEngine:didAudioSourceNumberChange:withConnectionNumber
+@abstract
+  音频数据通道的数据来源改变时的通知
+
+@param sourceNumber
+ 相应连接的音频数据来源的号码
+ 
+@param connectionNumber
+ 连接名称
+*/
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioSourceNumberChange:(NSString * _Nullable)sourceNumber withConnectionNumber:(NSString * _Nullable)connectionNumber;
+
 
 @end
 

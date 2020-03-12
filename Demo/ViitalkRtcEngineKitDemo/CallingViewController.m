@@ -84,8 +84,8 @@
     [self.view addSubview:self.createConferenceButton];
     [self.view addSubview:self.logoutButton];
     
-    _callNumberTextField.text = @"8010019153";
-    // _callNumberTextField.text = @"8010016778";
+    // _callNumberTextField.text = @"8010019153";
+    _callNumberTextField.text = @"8010016778";
     
     self.kit = [ViitalkRtcEngineKit sharedEngineWithDelegate:self];
     self.remoteViews = [NSMutableArray array];
@@ -549,9 +549,9 @@
     view.view.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 }
 
-- (void)remoteVideoView:(ViitalkRemoteVideoView*)videoView didChangeVideoViewSourceNumber:(uint64_t)sourceNumber
+- (void)remoteVideoView:(ViitalkRemoteVideoView*)videoView didChangeVideoViewSourceNumber:(NSString*)sourceNumber
 {
-    NSLog(@"+++++sourceNumberChange:%@", @(sourceNumber));
+    NSLog(@"当前远端视频窗口%@显示的数据源改变为:%@", videoView, sourceNumber);
 }
 
 #pragma mark - ViitalkRtcEngineDelegate
@@ -827,6 +827,12 @@
         default:
             break;
     }
+    return YES;
+}
+
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioSourceNumberChange:(NSString * _Nullable)sourceNumber withConnectionNumber:(NSString * _Nullable)connectionNumber
+{
+    NSLog(@"音频连接通道%@的数据源改变为:%@", connectionNumber, sourceNumber);
     return YES;
 }
 

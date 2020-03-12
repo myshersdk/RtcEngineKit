@@ -15,6 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class RTCAudioSource;
 
+@protocol RTCAudioDataDelegate
+
+- (void)audioSourceDidChangeSourceNumber:(NSString*)sourceNumber;
+
+@end
+
 RTC_EXPORT
 @interface RTCAudioTrack : RTCMediaStreamTrack
 
@@ -22,6 +28,8 @@ RTC_EXPORT
 
 /** The audio source for this audio track. */
 @property(nonatomic, readonly) RTCAudioSource *source;
+
+- (void)setAudioDataDelegate:(id<RTCAudioDataDelegate> _Nullable)delegate;
 
 @end
 

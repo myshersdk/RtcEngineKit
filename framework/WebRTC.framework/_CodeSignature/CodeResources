@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/RTCAudioTrack.h</key>
 		<data>
-		ytUURiOEIBDhSQhkaUnYOSry8W4=
+		N+q5jrifhnTol4tRUd3sCCwEO6c=
 		</data>
 		<key>Headers/RTCCVPixelBuffer.h</key>
 		<data>
@@ -286,7 +286,7 @@
 		</data>
 		<key>Headers/RTCVideoRenderer.h</key>
 		<data>
-		rqKSNf365v0Cmsz7ijKg/L4yZHU=
+		lFKbySuHbZsC/BLkpmlbeZztbgc=
 		</data>
 		<key>Headers/RTCVideoSource.h</key>
 		<data>
@@ -380,11 +380,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ytUURiOEIBDhSQhkaUnYOSry8W4=
+			N+q5jrifhnTol4tRUd3sCCwEO6c=
 			</data>
 			<key>hash2</key>
 			<data>
-			1+MY0k7EENj9wfYl6sTKZvc9DlRcpoeGm6EubpfoD/I=
+			mXSqj+4kGhaJL7E8Hx+N/2uPa88ctYL1qYAsS0hg2/c=
 			</data>
 		</dict>
 		<key>Headers/RTCCVPixelBuffer.h</key>
@@ -1117,11 +1117,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rqKSNf365v0Cmsz7ijKg/L4yZHU=
+			lFKbySuHbZsC/BLkpmlbeZztbgc=
 			</data>
 			<key>hash2</key>
 			<data>
-			uIACmGnRCMDEmTl2YFTLDKaHak9nKGstJJ89rPsPvKc=
+			m9e5Wz0ba2frjao4LosONZgIzo/3sJqlQgTdmh14Rc4=
 			</data>
 		</dict>
 		<key>Headers/RTCVideoSource.h</key>
