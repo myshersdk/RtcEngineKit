@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "ViitalkEnumerates.h"
+#import "ViitalkLocalVideoView.h"
+#import "ViitalkRemoteVideoView.h"
 
 @class ViitalkRtcEngineKit;
 
