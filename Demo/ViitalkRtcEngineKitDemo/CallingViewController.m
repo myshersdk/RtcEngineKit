@@ -830,9 +830,9 @@
     return YES;
 }
 
-- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioSourceNumberChange:(NSString * _Nullable)sourceNumber withConnectionNumber:(NSString * _Nullable)connectionNumber
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioLevelChange:(int)level withConnectionNumber:(NSString * _Nullable)connectionNumber andSourceNumber:(NSString * _Nullable)sourceNumber
 {
-    NSLog(@"音频连接通道%@的数据源改变为:%@", connectionNumber, sourceNumber);
+    // NSLog(@"音频连接通道%@的数据源为:%@ 音量等级为:%d", connectionNumber, sourceNumber, level);
     return YES;
 }
 

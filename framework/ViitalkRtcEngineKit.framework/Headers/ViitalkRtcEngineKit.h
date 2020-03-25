@@ -157,17 +157,21 @@
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didRecvRoomCommand:(ViitalkRoomCommandCode)cmd extra:(NSDictionary * _Nullable)extra;
 
 /*!
-@method rtcEngine:didAudioSourceNumberChange:withConnectionNumber
+@method rtcEngine:didAudioLevelChange:withConnectionNumber:andSourceNumber
 @abstract
-  音频数据通道的数据来源改变时的通知
+  音频数据通道的音量等级改变时的通知
 
-@param sourceNumber
- 相应连接的音频数据来源的号码
+@param level
+ 音频dB 范围:[0-100]
  
 @param connectionNumber
  连接名称
+ 
+@param sourceNumber
+ 相应连接的音频数据来源的号码
+ 
 */
-- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioSourceNumberChange:(NSString * _Nullable)sourceNumber withConnectionNumber:(NSString * _Nullable)connectionNumber;
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioLevelChange:(int)level withConnectionNumber:(NSString * _Nullable)connectionNumber andSourceNumber:(NSString * _Nullable)sourceNumber;
 
 
 @end

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol RTCAudioDataDelegate
 
-- (void)audioSourceDidChangeSourceNumber:(NSString*)sourceNumber;
+- (void)audioSourceDidChangeAudioLevel:(int)level forSourceNumber:(NSString*)sourceNumber;
 
 @end
 
