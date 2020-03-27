@@ -106,6 +106,10 @@ typedef NS_ENUM(NSInteger, ViitalkRoomStatusCode) {
     VIITALK_ROOM_ERROR_EXIST = 2,
     /** no permission to create room */
     VIITALK_ROOM_ERROR_PERMISSION = 3,
+    /** already in the conference */
+    VIITALK_ROOM_ERROR_IN_CONFERENCE = 4,
+    /** the server has error */
+    VIITALK_ROOM_ERROR_SERVER = 5,
     /** join room error */
     VIITALK_ROOM_ERROR_JOIN = 50,
     /** join not exist room error */
