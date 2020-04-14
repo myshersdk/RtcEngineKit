@@ -8,14 +8,15 @@
 
 #import "CallingViewController.h"
 #import "ViitalkRtcEngineKit/ViitalkRtcEngineKit.h"
-#import "ViitalkRtcEngineKit/ViitalkLocalVideoView.h"
 #import "ViitalkRtcEngineKit/ViitalkRemoteVideoView.h"
+#import "ViitalkRtcEngineKit/ViitalkCaptureController.h"
 
 #import <AVFoundation/AVUtilities.h>
 
 @interface CallingViewController () <ViitalkRtcEngineDelegate, ViitalkRemoteVideoViewDelegate>
 
 @property (nonatomic, strong) ViitalkRtcEngineKit *kit;
+@property (nonatomic, strong) ViitalkCaptureController *captureController;
 
 @property (nonatomic, strong) UIButton* logoutButton;
 
@@ -49,6 +50,7 @@
 @implementation CallingViewController
 
 @synthesize kit = _kit;
+@synthesize captureController = _captureController;
 @synthesize logoutButton = _logoutButton;
 @synthesize callNumberTextField = _callNumberTextField;
 @synthesize videoCallButton = _videoCallButton;
@@ -88,6 +90,7 @@
     _callNumberTextField.text = @"8010016778";
     
     self.kit = [ViitalkRtcEngineKit sharedEngineWithDelegate:self];
+    self.captureController = self.kit.captureController;
     self.remoteViews = [NSMutableArray array];
     self.peerNumbers = [NSMutableArray array];
 }
@@ -210,11 +213,13 @@
 
 - (void)OnSwitchCamera:(UIButton*)sender
 {
-    [self.kit switchCamera];
+    [self.captureController switchCamera];
 }
 
 - (void)OnHangup:(UIButton*)sender
 {
+    [self.captureController stopCapture];
+
     if(self.isConference)
     {
         // 解散房间
@@ -253,6 +258,14 @@
 - (void)OnVideoMute:(UIButton*)sender
 {
     _hasMuteVideo = !_hasMuteVideo;
+    if(_hasMuteVideo)
+    {
+        [self.captureController stopCapture];
+    }
+    else
+    {
+        [self.captureController startCapture];
+    }
     self.kit.muteVideo = _hasMuteVideo;
     
     // 测试会议模式下关闭对方的设备
@@ -376,14 +389,14 @@
                 [self.callView addSubview:remoteVideoView];
             }
         }
-        
-        ViitalkLocalVideoView* local = extra[@"local"];
-        UIView* localVideoView = local.view;
+
+        UIView* localVideoView = self.captureController.view;
         if(localVideoView)
         {
             localVideoView.frame = CGRectMake(CGRectGetWidth(self.view.frame) / 2 - 90, CGRectGetHeight(self.view.frame) - 60 - 320, 180, 320);
             [self.callView addSubview:localVideoView];
         }
+        [self.captureController startCapture];
         
         self.switchCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.switchCameraButton addTarget:self action:@selector(OnSwitchCamera:) forControlEvents:UIControlEventTouchUpInside];
@@ -830,9 +843,20 @@
     return YES;
 }
 
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didRecvExtendCommand:(ViitalkRoomExtendCommandCode)cmd extra:(NSDictionary * _Nullable)extra
+{
+    return YES;
+}
+
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioLevelChange:(int)level withConnectionNumber:(NSString * _Nullable)connectionNumber andSourceNumber:(NSString * _Nullable)sourceNumber
 {
     // NSLog(@"音频连接通道%@的数据源为:%@ 音量等级为:%d", connectionNumber, sourceNumber, level);
+    return YES;
+}
+
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didLocalAudioLevelChange:(int)level
+{
+    // NSLog(@"本地麦克风采集声音的音量等级为:%d", level);
     return YES;
 }
 

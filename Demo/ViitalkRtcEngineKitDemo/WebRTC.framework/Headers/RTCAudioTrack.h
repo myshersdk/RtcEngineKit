@@ -21,6 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@protocol RTCLocalAudioLevelDelegate
+
+- (void)audioSourceDidChangeAudioLevel:(int)level;
+
+@end
+
 RTC_EXPORT
 @interface RTCAudioTrack : RTCMediaStreamTrack
 
@@ -30,6 +36,8 @@ RTC_EXPORT
 @property(nonatomic, readonly) RTCAudioSource *source;
 
 - (void)setAudioDataDelegate:(id<RTCAudioDataDelegate> _Nullable)delegate;
+
+- (void)setLocalAudioLevelDelegate:(id<RTCLocalAudioLevelDelegate> _Nullable)delegate;
 
 @end
 

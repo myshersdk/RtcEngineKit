@@ -25,8 +25,6 @@ RTC_EXPORT
 /** The size of the frame. */
 - (void)setSize:(CGSize)size;
 
-- (void)setSourceNumber:(NSString*)sourceNumber;
-
 /** The frame to be displayed. */
 - (void)renderFrame:(nullable RTCVideoFrame *)frame;
 

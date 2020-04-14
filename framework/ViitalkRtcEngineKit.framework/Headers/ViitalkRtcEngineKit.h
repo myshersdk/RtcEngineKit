@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "ViitalkEnumerates.h"
-#import "ViitalkLocalVideoView.h"
 #import "ViitalkRemoteVideoView.h"
+#import "ViitalkCaptureController.h"
 
 @class ViitalkRtcEngineKit;
 
@@ -157,6 +157,19 @@
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didRecvRoomCommand:(ViitalkRoomCommandCode)cmd extra:(NSDictionary * _Nullable)extra;
 
 /*!
+@method rtcEngine:didRecvExtendCommand:extra
+@abstract
+ 会议一些查询类命令
+
+@param cmd
+ 命令
+ 
+@param extra
+ 相应参数
+*/
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didRecvExtendCommand:(ViitalkRoomExtendCommandCode)cmd extra:(NSDictionary * _Nullable)extra;
+
+/*!
 @method rtcEngine:didAudioLevelChange:withConnectionNumber:andSourceNumber
 @abstract
   音频数据通道的音量等级改变时的通知
@@ -173,6 +186,15 @@
 */
 - (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didAudioLevelChange:(int)level withConnectionNumber:(NSString * _Nullable)connectionNumber andSourceNumber:(NSString * _Nullable)sourceNumber;
 
+/*!
+@method rtcEngine:didLocalAudioLevelChange:
+@abstract
+  本地麦克风采集声音的音量等级改变时的通知
+
+@param level
+ 音频dB 范围:[0-100]
+ */
+- (BOOL)rtcEngine:(ViitalkRtcEngineKit * _Nonnull)engine didLocalAudioLevelChange:(int)level;
 
 @end
 
@@ -286,11 +308,11 @@ typedef void (^RoomCompletionHandler)(ViitalkRoomStatusCode status, NSDictionary
 #pragma mark - common core
 
 /*!
-@method switchCamera
+@property captureController
 @abstract
- 翻转摄像头
+   摄像头控制器
 */
-- (void)switchCamera;
+@property (nonatomic, readonly) ViitalkCaptureController * _Nonnull captureController;
 
 /*!
 @property muteSpeaker
@@ -482,5 +504,15 @@ completionHandler:(CallCompletionHandler _Nullable)completion;
  对方号码
 */
 - (void)sendRoomCommand:(ViitalkRoomCommandCode)cmd toUser:(NSString* _Nonnull)number;
+
+/*!
+@method sendRoomExtendCommand:
+@abstract
+ 发送其它的xmpp命令
+
+@param cmd
+ 具体命令
+*/
+- (void)sendRoomExtendCommand:(ViitalkRoomExtendCommandCode)cmd;
 
 @end

@@ -4,13 +4,13 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/ViitalkCaptureController.h</key>
+		<data>
+		IG7hAtnxkabm58g95IFF+3PsZnc=
+		</data>
 		<key>Headers/ViitalkEnumerates.h</key>
 		<data>
-		xvA7DthVcHf4jgzvwPZ7Rkt2Unc=
-		</data>
-		<key>Headers/ViitalkLocalVideoView.h</key>
-		<data>
-		ea1WOL6W/72S8AgAMdCh7afMSIQ=
+		Vz8RHRGp0kL4K3DRjPOmNw8KWGY=
 		</data>
 		<key>Headers/ViitalkRemoteVideoView.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/ViitalkRtcEngineKit.h</key>
 		<data>
-		SdZUI+9xI+dIiV6ZmM8eWGnEmoE=
+		Q5IEDkwzZEtNq9Rj0npVCFTknWU=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -31,18 +31,18 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/ViitalkCaptureController.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6t6u84rijCtku7nsgCggw+BJ4OkKGtul8QtVJPrVXyw=
+			</data>
+		</dict>
 		<key>Headers/ViitalkEnumerates.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			bVSqFn5B8dEzMeCpN/bSzYuDY087ZntFssQBsfWWjyY=
-			</data>
-		</dict>
-		<key>Headers/ViitalkLocalVideoView.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			KvnW00TcrvBMC/37Mmr5BFASpDEQAOl7dVYdPM8EV48=
+			woW+lSoEK1e0slagtFRTvbarO7cuN1qxWkg2yyenYQg=
 			</data>
 		</dict>
 		<key>Headers/ViitalkRemoteVideoView.h</key>
@@ -56,7 +56,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SHMt9VEgcc4qJ//fpeBx/D0I/NOI2wFbJ6DTQozIP7U=
+			+bk6FZrlRctC+2UBYKa1yLH4Qk0hyYHIBbE9IVvUCHc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
